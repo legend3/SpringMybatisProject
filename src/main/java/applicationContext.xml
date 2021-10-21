@@ -17,8 +17,42 @@
        http://www.springframework.org/schema/cache
        http://www.springframework.org/schema/cache/spring-cache.xsd"
 >
-<bean id="Student">
+<!--   1.加载db.properties数据库信息文件 -->
+    <bean id="config" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="locations">
+            <array>
+                <value>classpath:db.properties</value>
+            </array>
+        </property>
+        <property name="fileEncoding">
+            <value>UTF-8</value>
+        </property>
+    </bean>
+<!--   2.配置数据库信息(替代mybatis的配置文件conf.xml;(不由mybatis的配置文件conf.xml关联数据库了，而是交给spring配置文件关联))
+        PropertyPlaceholderConfigurer起的作用就是将占位符指向的数据库配置信息放在dataSource的bean中.
+ -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="url" value="${url}"></property>
+        <property name="driverClassName" value="${driver}"></property>
+        <property name="username" value="${username}"></property>
+        <property name="password" value="${password}"></property>
+    </bean>
+<!--    3.在SpringIoc容器中创建MyBATIS的核心类SqlSessionFatory-->
+<!--    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+<!--        <property name="dataSource" ref="dataSource"></property>-->
+<!--&lt;!&ndash;        加载mybatis配置文件&ndash;&gt;-->
+<!--        <property name="configLocation" value="classpath:conf.xml"></property>-->
+<!--    </bean>-->
 
-</bean>
+
+
+
+
+
+
+
+
+
+
 
 </beans>

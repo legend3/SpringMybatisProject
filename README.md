@@ -23,7 +23,7 @@ student表
 5. 之前使用MyBatis:  conf.xml ->SqlSessionFacotry  
 现在整合的时候，需要通过Spring管理SqlSessionFacotry ，因此 产生qlSessionFacotry 所需要的数据库信息 不在放入conf.xml  而需要放入spring配置文件中  
 配置Spring配置文件（applicationContext.xml）  
- 
+
 6. 使用Spring-MyBatis整合产物开发程序  
 目标：通过spring产生mybatis最终操作需要的 动态mapper对象(StudentMapper对象)
 Spring产生 动态mapper对象 有3种方法：
