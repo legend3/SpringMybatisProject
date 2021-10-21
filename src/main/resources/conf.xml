@@ -2,9 +2,10 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <!-- 数据库信息 -->
-    <!-- 加载映射文件 studentMapper.xml
+
+
+    <!-- 加载映射文件 studentMapper.xml-->
     <mappers>
-        <mapper resource="org/lanqiao/mapper/studentMapper.xml"/>
+        <mapper resource="studentMapper.xml"/>
     </mappers>
-    -->
 </configuration>

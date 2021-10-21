@@ -2,8 +2,8 @@ package org.legend.springMybatis.entity;
 
 public class Student {
     private int stuAge;
-    private String sutName;
-    private int stuNotes;
+    private String stuName;
+    private int stuNo;
 
     public int getStuAge() {
         return stuAge;
@@ -13,19 +13,19 @@ public class Student {
         this.stuAge = stuAge;
     }
 
-    public String getSutName() {
-        return sutName;
+    public String getStuName() {
+        return stuName;
     }
 
-    public void setSutName(String sutName) {
-        this.sutName = sutName;
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
     }
 
-    public int getStuNotes() {
-        return stuNotes;
+    public int getStuNo() {
+        return stuNo;
     }
 
-    public void setStuNotes(int stuNotes) {
-        this.stuNotes = stuNotes;
+    public void setStuNo(int stuNo) {
+        this.stuNo = stuNo;
     }
 }
