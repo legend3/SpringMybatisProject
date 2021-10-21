@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+<!--  数据库信息  -->
     <properties  resource="db.properties"/>
     <!--
         <settings>
@@ -13,7 +14,7 @@
         <!-- 单个别名 （别名 忽略大小写） -->
         <!-- <typeAlias type="org.legend.Student" alias="student"/> -->
         <!--  批量定义别名  （别名 忽略大小写），以下会自动将该包中的所有类 批量定义别名： 别名就是类名（不带包名，忽略大小写）   -->
-        <package name="org.legend.mybatis.entity"/>
+        <package name="org.legend.springMybatis"/>
     </typeAliases>
 
     <!-- 通过environments的default值 和  environment的 id 来指定 MyBatis运行时的数据库环境-->
@@ -47,7 +48,7 @@
 
     <mappers>
         <!-- 加载映射文件 -->
-        <mapper resource="org/legend/mybatis/mapper/studentMapper.xml"/>
+        <mapper resource="org/legend/springMybatis/mapper/studentMapper.xml"/>
     </mappers>
 
 

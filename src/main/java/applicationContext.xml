@@ -17,6 +17,8 @@
        http://www.springframework.org/schema/cache
        http://www.springframework.org/schema/cache/spring-cache.xsd"
 >
+<bean id="Student">
 
+</bean>
 
 </beans>

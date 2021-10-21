@@ -1,4 +1,4 @@
-package org.legend.entity;
+package org.legend.springMybatis.entity;
 
 public class Student {
     private int stuAge;
