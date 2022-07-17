@@ -1,9 +1,12 @@
 # Spring - MyBatis
 
 >思路：  
-SqlSessionFactory -> SqlSession ->StudentMapper ->CRUD  
-可以发现 ，MyBatis最终是通过SqlSessionFactory来操作数据库，  
-Spring整合MyBatis 其实就是 将MyBatis的SqlSessionFactory 交给Spring  
+SqlSessionFactory -> SqlSession ->StudentMapper ->CRUD
+可以发现 ，MyBatis最终是通过**SqlSessionFactory**来操作数据库，
+Spring整合MyBatis 其实就是 将MyBatis的**SqlSessionFactory交给Spring**.  
+
+>jdbc需要手动提交、spring方式都是自动提交.
+
 
 ## SM整合步骤：
 1. jar包  
@@ -28,38 +31,14 @@ student表
 目标：通过spring产生mybatis最终操作需要的 动态mapper对象(StudentMapper对象)
 Spring产生 动态mapper对象 有3种方法：
 
-- a.第一种方式  
-DAO层实现类  继承 SqlSessionDaoSupport类
-
-         SqlSessionDaoSupport类提供了一个属性 SqlSession
+6.1 第一种方式  
+DAO层实现类  继承 SqlSessionDaoSupport类(提供了一个属性 SqlSession),是Dao层能创建一个sqlSession对象，从而可以操作映射文件，进行增删改查。
 
 
-- b.第二种方式  
-就是省略掉 第一种方式的 实现类  
+6.2 第二种方式  
+就是省略掉 第一种方式的 实现类(studentDaoImpl)  
 直接MyBatis提供的 Mapper实现类：org.mybatis.spring.mapper.MapperFactoryBean  
 缺点：每个mapper都需要一个配置一次
 
-- c.第三种方式
-
+6.3 第三种方式
     批量配置 实现类
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
