@@ -19,10 +19,11 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
     <!--   1.加载db.properties数据库信息文件 -->
-    <bean id="config" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
-        <property name="locations">
+    <!--  如果遇到@Deprecated的过时类，1.查看文档是有指导 -->
+    <bean id="config" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations"><!-- 可以加载多个配置文件! -->
             <array>
-                <value>classpath:db.properties</value>
+                <value>classpath:db.properties</value><!--  将会放置到id为dataSource的bean中    -->
             </array>
         </property>
         <property name="fileEncoding">
@@ -30,13 +31,15 @@
         </property>
     </bean>
 
-    <!--   2.配置数据库信息(替代mybatis的配置文件conf.xml;(不由mybatis的配置文件conf.xml关联数据库了，而是交给spring配置文件关联))
-            PropertyPlaceholderConfigurer起的作用就是将占位符指向的数据库配置信息放在dataSource的bean中.
+    <!--    2.配置数据库信息(替代mybatis的配置文件conf.xml;<不由mybatis的配置文件conf.xml关联数据库了，
+                            而是交给spring配置文件关联>)
+
+            PropertyPlaceholderConfigurer(id=config的bean)起的作用就是将占位符(driver、url、username、password)指向的数据库配置信息放在dataSource的bean中.
 
             自动提交:增、删、改时dbcp帮会自动提交
      -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="url" value="${url}"></property>
+        <property name="url" value="${url}"></property><!-- EL形式 -->
         <property name="driverClassName" value="${driver}"></property>
         <property name="username" value="${username}"></property>
         <property name="password" value="${password}"></property>
@@ -46,30 +49,25 @@
     	1和2取代: Reader reader = Resources.getResourceAsReader("mybatisConf.xml");
     -->
 
-    <!-- 第一种方式生成mapper对象
-       <bean id="studentMapper" class="org.legend.springMybatis.dao.impl.studentDaoImpl">
-       -->
-    <!--
-            前提：通过sqlSessionFactoryc创建SqlSession,从而能获取映射Mapper类接口方法操作数据库:
-                    0.我们把dao层充当Mapper类
-                    1.此处我们用bean生成sqlSessionFactory
-            将spring配置的sqlSessionFactory对象交给mapper(原先定义的dao层)	-->
-    <!--
-            <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-        </bean>
-        -->
-
+    <!-- 第一种方式生成mapper对象 -->
+<!--       <bean id="studentMapper" class="org.legend.springMybatis.dao.impl.studentDaoImpl">-->
+<!--    &lt;!&ndash;将Spring配置的sqlSessionFactory对象交给dao层——mapper(dao)-->
+<!--            前提：通过sqlSessionFactory创建SqlSession,从而能获取映射Mapper类接口方法操作数据库:-->
+<!--                    0.我们把dao层充当Mapper类-->
+<!--                    1.此处我们用bean生成sqlSessionFactory-->
+<!--            将spring配置的sqlSessionFactory对象交给mapper(原先定义的dao层)	&ndash;&gt;-->
+<!--            <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+<!--        </bean>-->
 
     <!-- 第二种方式生成mapper对象
             1.通过MapperFactoryBean对象自动创建SqlSession、自动实现接口！
             2.缺点：每个bean只代表一个接口
      -->
-    <!--
-       <bean id="studentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-           <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-           <property name="mapperInterface" value="org.legend.springMybatis.mapper.StudentMapper"></property>
-       </bean>
-        -->
+<!--       <bean id="studentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+<!--           <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+                <!--  一个bean只能一个接口  -->
+<!--           <property name="mapperInterface" value="org.legend.springMybatis.org.legend.springMybatis.add.StudentMapper"></property>-->
+<!--       </bean>-->
 
     <!-- 第三种方式生成mapper对象
             1.通过MapperScannerConfigurer对象扫描mapper包(多个包用逗号隔开)
@@ -78,12 +76,8 @@
      -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
-        <property name="basePackage" value="org.legend.springMybatis.mapper"></property>
-    </bean>
-
-    <!-- service层 -->
-    <bean id="studentService" class="org.legend.springMybatis.service.impl.studentServiceImpl">
-        <property name="studentMapper" ref="studentMapper"></property>
+        <!--   一个bean可以1.多个接口，指定接口的包; 2.多个包用逗号隔开     提供bean给service层 -->
+        <property name="basePackage" value="org.legend.springMybatis.add,org.legend.springMybatis.select"></property>
     </bean>
 
     <!--    3.在SpringIoc容器中创建MyBatis的核心类SqlSessionFatory
@@ -94,12 +88,31 @@
                             同时SqlSessionFactory也是线程安全的,SqlSessionFactory一旦被创建,应该在应用执行期间都存在.
                                 在应用运行期间不要重复创建多次,建议使用单例模式.SqlSessionFactory是创建SqlSession的工厂.
         -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"></property>
-        <!--  加载mybatis配置文件-->
-        <property name="configLocation" value="classpath:conf.xml"></property>
-        <!--  加载mapper配置文件(完全瓦解了mybatis配置文件！)  -->
-        <property name="mapperLocations" value="org/legend/springMybatis/mapper/*.xml"></property>
-    </bean>
 
+    <!-- 3.在SpringIoc容器中创建MyBatis的核心类SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property><!-- 1 -->
+        <!--  加载mybatis配置文件-->
+<!--        <property name="configLocation" value="classpath:conf.xml"></property>&lt;!&ndash; 1 &ndash;&gt;-->
+<!--          加载mapper配置文件(完全瓦解了mybatis配置文件！)-->
+        <property name="mapperLocations"> <!-- 单个mybatis配置文件包 value="org/legend/springMybatis/add/*.xml">-->
+            <list><!-- 多个mybatis配置文件包时 -->
+                <value>classpath*:org/legend/springMybatis/add/*.xml</value>
+                <value>classpath*:org/legend/springMybatis/select/*.xml</value>
+            </list>
+        </property><!-- 1,2,3 -->
+    </bean>
+    <!-- 4.service层 -->
+    <bean id="studentService" class="org.legend.springMybatis.service.impl.studentServiceImpl">
+        <property name="addstudentMapper" ref="addStudentMapper"/>
+        <property name="selectstuentMapper" ref="selectStudentMapper"/>
+    </bean>
+    <!--
+        1.
+            1.1 获取db
+            1.2 注入db信息
+        2. 扫面生成mapper对象
+        3. 创建SqlSessionFactory，建立mapper对象与表关系，注入mapper对象，
+        4. servie层操作数据库
+    -->
 </beans>

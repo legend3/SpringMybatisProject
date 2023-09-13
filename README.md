@@ -8,23 +8,24 @@ Spring整合MyBatis 其实就是 将MyBatis的**SqlSessionFactory交给Spring**.
 >jdbc需要手动提交、spring方式都是自动提交.
 
 
-## SM整合步骤：
+## SM整合步骤：  
 1. jar包  
 mybatis-spring.jar	spring-tx.jar	spring-jdbc.jar		spring-expression.jar
 spring-context-support.jar	spring-core.jar		spring-context.jar
 spring-beans.jar	spring-aop.jar	spring-web.jar	commons-logging.jar
 commons-dbcp.jar	ojdbc.jar	mybatis.jar	log4j.jar	commons-pool.jar
 
-2. 类-表
+2. 类-表  
 student.class
 student表
 
-3. MyBatis配置文件conf.xml
+3. MyBatis配置文件conf.xml  
 
 4. 通过mapper.xml将 类、表建立映射关系
 
 5. 之前使用MyBatis:  conf.xml ->SqlSessionFacotry  
-现在整合的时候，需要通过Spring管理SqlSessionFacotry ，因此 产生qlSessionFacotry 所需要的数据库信息 不在放入conf.xml  而需要放入spring配置文件中  
+现在整合的时候，需要通过Spring管理SqlSessionFacotry ，因此 产生qlSessionFacotry 所需要的数据库信息 不在放入conf.xml  
+而需要放入spring配置文件中  
 配置Spring配置文件（applicationContext.xml）  
 
 6. 使用Spring-MyBatis整合产物开发程序  

@@ -1,20 +1,32 @@
 package org.legend.springMybatis.service.impl;
 
-
 import org.legend.springMybatis.entity.Student;
-import org.legend.springMybatis.mapper.StudentMapper;
+import org.legend.springMybatis.add.addStudentMapper;
+import org.legend.springMybatis.select.selectStudentMapper;
 import org.legend.springMybatis.service.IStudentService;
 
-public class studentServiceImpl implements IStudentService {
-    private StudentMapper studentMapper ;
+import java.util.List;
 
-    public void setStudentMapper(StudentMapper studentMapper) {
-        this.studentMapper = studentMapper;
+public class studentServiceImpl implements IStudentService {
+    private addStudentMapper addstudentMapper;//service调dao
+    private selectStudentMapper selectstudentMapper;
+
+    public void setAddstudentMapper(addStudentMapper addstudentMapper) {
+        this.addstudentMapper = addstudentMapper;
+    }
+
+    public void setSelectstuentMapper(selectStudentMapper selectstudentMapper) {
+        this.selectstudentMapper = selectstudentMapper;
     }
 
     @Override
     public void add(Student student) {
         //调用Dao层
-        studentMapper.addStudent(student);
+        addstudentMapper.addStudent(student);
+    }
+
+    @Override
+    public List<Student> select() {
+        return selectstudentMapper.selectStudent();
     }
 }
